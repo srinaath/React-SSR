@@ -8241,7 +8241,7 @@ var _reducers2 = _interopRequireDefault(_reducers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var store = (0, _redux.createStore)(_reducers2.default, {}, (0, _redux.applyMiddleware)(_reduxThunk2.default));
+var store = (0, _redux.createStore)(_reducers2.default, window.INITIAL_STATE, (0, _redux.applyMiddleware)(_reduxThunk2.default));
 
 _reactDom2.default.hydrate(_react2.default.createElement(
   _reactRedux.Provider,
@@ -33738,29 +33738,28 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _react = __webpack_require__(6);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _home = __webpack_require__(401);
+var _homePage = __webpack_require__(401);
 
-var _home2 = _interopRequireDefault(_home);
+var _homePage2 = _interopRequireDefault(_homePage);
 
-var _usersList = __webpack_require__(402);
+var _usersListPage = __webpack_require__(402);
 
-var _usersList2 = _interopRequireDefault(_usersList);
+var _usersListPage2 = _interopRequireDefault(_usersListPage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = [{
-  component: _home2.default,
+exports.default = [_extends({}, _homePage2.default, {
   path: '/',
   exact: true
-}, {
-  loadData: _usersList.loadData,
-  component: _usersList2.default,
+}), _extends({}, _usersListPage2.default, {
   path: '/users'
-}];
+})];
 
 /***/ }),
 /* 401 */
@@ -33798,7 +33797,9 @@ var Home = function Home() {
   );
 };
 
-exports.default = Home;
+exports.default = {
+  component: Home
+};
 
 /***/ }),
 /* 402 */
@@ -33810,7 +33811,6 @@ exports.default = Home;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.loadData = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -33842,12 +33842,7 @@ var UsersList = function (_Component) {
   _createClass(UsersList, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.props.fetchUsers();
-    }
-  }, {
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps, oldProps) {
-      if (nextProps.users !== oldProps.users) {}
+      // this.props.fetchUsers();
     }
   }, {
     key: 'renderUsers',
@@ -33892,8 +33887,10 @@ function loadData(store) {
   return store.dispatch((0, _actions.fetchUsers)());
 }
 
-exports.loadData = loadData;
-exports.default = (0, _reactRedux.connect)(mapStateToProps, { fetchUsers: _actions.fetchUsers })(UsersList);
+exports.default = {
+  loadData: loadData,
+  component: (0, _reactRedux.connect)(mapStateToProps, { fetchUsers: _actions.fetchUsers })(UsersList)
+};
 
 /***/ }),
 /* 403 */
