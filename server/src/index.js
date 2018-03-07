@@ -38,6 +38,10 @@ app.use('/', (req, res) => {
     Promise.all(promises).then((result) => {
       const context = {};
       const content = renderer(req, store, context);
+
+      if (context.url) {
+        return res.redirect(301, context.url);
+      }
       
       if (context.notFound === true) {
         res.status(404);
